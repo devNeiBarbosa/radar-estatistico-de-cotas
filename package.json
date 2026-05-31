@@ -1,0 +1,37 @@
+{
+  "name": "radar-estatistico-cotas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Base Fase 1 do Radar Estatístico de Cotas - plataforma consultiva para análise histórica de frequência aplicada a cotas de consórcio.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "seed:test": "tsx scripts/test-seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "clsx": "latest",
+    "lucide-react": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "recharts": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "25.9.1",
+    "@types/react": "19.2.15",
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "prisma": "^6.19.0",
+    "tailwindcss": "latest",
+    "tsx": "^4.22.4",
+    "typescript": "latest"
+  }
+}

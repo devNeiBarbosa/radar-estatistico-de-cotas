@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum QuotaStatus {
+  AVAILABLE
+  RESERVED
+  UNDER_ANALYSIS
+  UNAVAILABLE
+}
+
+model FederalDraw {
+  id            String       @id @default(cuid())
+  contestNumber Int          @unique
+  drawDate      DateTime
+  firstPrize    String
+  secondPrize   String
+  thirdPrize    String
+  fourthPrize   String
+  fifthPrize    String
+  sourceUrl     String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  numbers       DrawNumber[]
+
+  @@index([drawDate])
+  @@index([contestNumber])
+}
+
+model DrawNumber {
+  id               String      @id @default(cuid())
+  federalDrawId    String
+  federalDraw      FederalDraw @relation(fields: [federalDrawId], references: [id], onDelete: Cascade)
+  prizePosition    Int
+  fullNumber       String
+  lastTwoDigits    String
+  lastThreeDigits  String
+  thousand         Int
+  hundredRange     Int
+  twoHundredRange  Int
+  fiveHundredRange Int
+  drawDate         DateTime
+  createdAt        DateTime    @default(now())
+
+  @@index([federalDrawId])
+  @@index([drawDate])
+  @@index([lastTwoDigits])
+  @@index([lastThreeDigits])
+  @@index([hundredRange])
+  @@index([twoHundredRange])
+  @@index([fiveHundredRange])
+}
+
+model ConsortiumQuota {
+  id               String          @id @default(cuid())
+  quotaNumber      String
+  groupCode        String
+  adminName        String
+  creditValue      Decimal         @db.Decimal(14, 2)
+  installmentValue Decimal         @db.Decimal(14, 2)
+  status           QuotaStatus     @default(AVAILABLE)
+  notes            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  analyses         QuotaAnalysis[]
+
+  @@index([quotaNumber])
+  @@index([groupCode])
+  @@index([adminName])
+  @@index([status])
+}
+
+model QuotaAnalysis {
+  id                String          @id @default(cuid())
+  quotaId           String
+  quota             ConsortiumQuota @relation(fields: [quotaId], references: [id], onDelete: Cascade)
+  analysisPeriod    String
+  lastTwoDigits     String
+  lastThreeDigits   String
+  rangeScore        Decimal         @db.Decimal(6, 2)
+  frequencyScore    Decimal         @db.Decimal(6, 2)
+  distributionScore Decimal         @db.Decimal(6, 2)
+  concentrationRisk Decimal         @db.Decimal(6, 2)
+  finalScore        Decimal         @db.Decimal(6, 2)
+  summary           String
+  createdAt         DateTime        @default(now())
+
+  @@index([quotaId])
+  @@index([analysisPeriod])
+  @@index([finalScore])
+}
