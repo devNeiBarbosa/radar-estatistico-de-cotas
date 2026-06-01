@@ -10,7 +10,8 @@
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "seed:test": "tsx scripts/test-seed.ts"
+    "seed:test": "tsx scripts/test-seed.ts",
+    "import:federal": "tsx scripts/import-federal-draws.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
